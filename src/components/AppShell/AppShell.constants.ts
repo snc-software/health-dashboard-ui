@@ -15,3 +15,8 @@ export const SEARCHABLE_ROUTES: OptionItem[] = [
 ];
 
 export const SEARCH_DEBOUNCE_MS = 260;
+
+export const NAVIGATION_ITEMS = [
+  { key: 'overview', label: 'Overview', path: '/' },
+  { key: 'activities', label: 'Activities', path: '/activities' },
+] as const;

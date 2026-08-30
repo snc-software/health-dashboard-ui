@@ -1,26 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
-import { Search, ViewGrid } from 'iconoir-react';
+import { Search } from 'iconoir-react';
+import { useNavigate, useRouterState } from '@tanstack/react-router';
 import {
+  BasicNavigationMenu,
   CmdK,
   IconButton,
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarRail,
-  SidebarTrigger,
+  NavigationBar,
   ThemeToggle,
   Tooltip,
 } from '@snc-software/snc-ui';
-import type { OptionItem, Theme } from '@snc-software/snc-ui';
-import { SidebarBrand } from './SidebarBrand';
-import { SEARCHABLE_ROUTES, SEARCH_DEBOUNCE_MS } from './AppShell.constants';
+import type { NavigationLink, OptionItem, Theme } from '@snc-software/snc-ui';
+import { NAVIGATION_ITEMS, SEARCHABLE_ROUTES, SEARCH_DEBOUNCE_MS } from './AppShell.constants';
 import { classes } from './AppShell.styles';
 import type { AppShellProps } from './AppShell.types';
 
@@ -30,6 +20,8 @@ export function AppShell({ children }: AppShellProps) {
   const [searching, setSearching] = useState(false);
   const [isCmdkOpen, setIsCmdkOpen] = useState(false);
   const searchTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const navigate = useNavigate();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -75,73 +67,51 @@ export function AppShell({ children }: AppShellProps) {
     }, SEARCH_DEBOUNCE_MS);
   }
 
+  const navigationItems: NavigationLink[] = NAVIGATION_ITEMS.map((item) => ({
+    key: item.key,
+    label: item.label,
+    isActive: pathname === item.path,
+    onClick: () => navigate({ to: item.path }),
+  }));
+
   return (
     <div className={classes.page}>
-      <SidebarProvider defaultOpen className={classes.provider}>
-        <Sidebar collapsible="icon">
-          <SidebarHeader>
-            <SidebarBrand />
-          </SidebarHeader>
+      <NavigationBar
+        brand={null}
+        navigationMenu={<BasicNavigationMenu items={navigationItems} />}
+        actions={
+          <div className={classes.actions}>
+            <Tooltip content="⌘K" placement="bottom">
+              <IconButton label="Search" title={undefined} onClick={() => setIsCmdkOpen(true)}>
+                <Search width={16} height={16} strokeWidth={1.8} />
+              </IconButton>
+            </Tooltip>
 
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton isActive tooltip="Overview">
-                      <ViewGrid width={16} height={16} strokeWidth={1.6} />
-                      <span>Overview</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
+            <Tooltip content="Toggle theme" placement="bottom">
+              <ThemeToggle
+                theme={theme}
+                label="Toggle theme"
+                title={undefined}
+                onToggle={toggleTheme}
+              />
+            </Tooltip>
+          </div>
+        }
+      />
 
-          <SidebarRail />
-        </Sidebar>
+      <CmdK
+        isOpen={isCmdkOpen}
+        onClose={closeCmdk}
+        options={results}
+        isLoading={searching}
+        placeholder="Search"
+        debounceMs={200}
+        emptyText="No matches"
+        closeLabel="Close search"
+        onSearch={handleSearch}
+      />
 
-        <SidebarInset>
-          <header className={classes.header}>
-            <div className={classes.headerStart}>
-              <Tooltip content="Toggle sidebar" placement="bottom">
-                <SidebarTrigger title={undefined} />
-              </Tooltip>
-            </div>
-
-            <div className={classes.headerActions}>
-              <Tooltip content="⌘K" placement="bottom">
-                <IconButton label="Search" title={undefined} onClick={() => setIsCmdkOpen(true)}>
-                  <Search width={16} height={16} strokeWidth={1.8} />
-                </IconButton>
-              </Tooltip>
-
-              <Tooltip content="Toggle theme" placement="bottom">
-                <ThemeToggle
-                  theme={theme}
-                  label="Toggle theme"
-                  title={undefined}
-                  onToggle={toggleTheme}
-                />
-              </Tooltip>
-            </div>
-          </header>
-
-          <CmdK
-            isOpen={isCmdkOpen}
-            onClose={closeCmdk}
-            options={results}
-            isLoading={searching}
-            placeholder="Search"
-            debounceMs={200}
-            emptyText="No matches"
-            closeLabel="Close search"
-            onSearch={handleSearch}
-          />
-
-          <main className={classes.main}>{children}</main>
-        </SidebarInset>
-      </SidebarProvider>
+      <main className={classes.main}>{children}</main>
     </div>
   );
 }
