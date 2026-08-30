@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap');
+@import './tailwind-theme.css';
+@import '@snc-software/snc-ui/style.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--snc-background);
+  color: var(--snc-text-primary);
+  font-family: var(--snc-font-family-body), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--snc-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--snc-primary-hover);
+}

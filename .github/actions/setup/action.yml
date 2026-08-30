@@ -1,0 +1,23 @@
+name: Setup
+description: Set up Node.js, authenticate to the @snc-software GitHub Packages registry, and install dependencies.
+
+inputs:
+  node-version:
+    description: Node.js version to install
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: https://npm.pkg.github.com
+        scope: '@snc-software'
+        cache: npm
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+      env:
+        NODE_AUTH_TOKEN: ${{ github.token }}

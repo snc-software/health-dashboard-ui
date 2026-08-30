@@ -1,0 +1,6 @@
+{
+  "target": "react",
+  "routeToken": "route",
+  "autoCodeSplitting": true,
+  "routeFileIgnorePattern": "^(?!route\\.tsx$|__root\\.tsx$|_[^/]+\\.tsx$).+\\.(tsx|ts)$"
+}

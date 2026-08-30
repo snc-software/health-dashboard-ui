@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+@import '@snc-software/snc-ui/design-tokens.css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-snc-raspberry-50: var(--snc-raspberry-50);
+  --color-snc-raspberry-100: var(--snc-raspberry-100);
+  --color-snc-raspberry-200: var(--snc-raspberry-200);
+  --color-snc-raspberry-300: var(--snc-raspberry-300);
+  --color-snc-raspberry-400: var(--snc-raspberry-400);
+  --color-snc-raspberry-500: var(--snc-raspberry-500);
+  --color-snc-raspberry-600: var(--snc-raspberry-600);
+  --color-snc-raspberry-700: var(--snc-raspberry-700);
+  --color-snc-raspberry-800: var(--snc-raspberry-800);
+  --color-snc-raspberry-900: var(--snc-raspberry-900);
+
+  --color-snc-sky-50: var(--snc-sky-50);
+  --color-snc-sky-100: var(--snc-sky-100);
+  --color-snc-sky-200: var(--snc-sky-200);
+  --color-snc-sky-300: var(--snc-sky-300);
+  --color-snc-sky-400: var(--snc-sky-400);
+  --color-snc-sky-500: var(--snc-sky-500);
+  --color-snc-sky-600: var(--snc-sky-600);
+  --color-snc-sky-700: var(--snc-sky-700);
+  --color-snc-sky-800: var(--snc-sky-800);
+  --color-snc-sky-900: var(--snc-sky-900);
+
+  --color-snc-neutral-50: var(--snc-neutral-50);
+  --color-snc-neutral-100: var(--snc-neutral-100);
+  --color-snc-neutral-200: var(--snc-neutral-200);
+  --color-snc-neutral-300: var(--snc-neutral-300);
+  --color-snc-neutral-400: var(--snc-neutral-400);
+  --color-snc-neutral-500: var(--snc-neutral-500);
+  --color-snc-neutral-600: var(--snc-neutral-600);
+  --color-snc-neutral-700: var(--snc-neutral-700);
+  --color-snc-neutral-800: var(--snc-neutral-800);
+  --color-snc-neutral-900: var(--snc-neutral-900);
+  --color-snc-neutral-950: var(--snc-neutral-950);
+
+  --color-snc-background: var(--snc-background);
+  --color-snc-surface: var(--snc-surface);
+  --color-snc-surface-accent: var(--snc-surface-accent);
+  --color-snc-text-primary: var(--snc-text-primary);
+  --color-snc-text-secondary: var(--snc-text-secondary);
+  --color-snc-border: var(--snc-border);
+  --color-snc-primary: var(--snc-primary);
+  --color-snc-primary-hover: var(--snc-primary-hover);
+  --color-snc-primary-subtle-bg: var(--snc-primary-subtle-bg);
+  --color-snc-accent: var(--snc-accent);
+  --color-snc-accent-subtle-bg: var(--snc-accent-subtle-bg);
+
+  --color-snc-success-bg: var(--snc-success-bg);
+  --color-snc-success-border: var(--snc-success-border);
+  --color-snc-success-text: var(--snc-success-text);
+  --color-snc-warning-bg: var(--snc-warning-bg);
+  --color-snc-warning-border: var(--snc-warning-border);
+  --color-snc-warning-text: var(--snc-warning-text);
+  --color-snc-error-bg: var(--snc-error-bg);
+  --color-snc-error-border: var(--snc-error-border);
+  --color-snc-error-text: var(--snc-error-text);
+  --color-snc-info-bg: var(--snc-info-bg);
+  --color-snc-info-border: var(--snc-info-border);
+  --color-snc-info-text: var(--snc-info-text);
+
+  --font-snc-heading: var(--snc-font-family-heading);
+  --font-snc-body: var(--snc-font-family-body);
+}
+
+/**
+ * CSS custom property inheritance passes down the already-computed value, not a live reference.
+ * Re-declaring each mode-dependent mapping under `.dark` forces a fresh lookup of the raw token
+ * wherever `.dark` lands in the DOM, rather than freezing whatever was computed at `:root`.
+ */
+.dark {
+  --color-snc-background: var(--snc-background);
+  --color-snc-surface: var(--snc-surface);
+  --color-snc-surface-accent: var(--snc-surface-accent);
+  --color-snc-text-primary: var(--snc-text-primary);
+  --color-snc-text-secondary: var(--snc-text-secondary);
+  --color-snc-border: var(--snc-border);
+  --color-snc-primary: var(--snc-primary);
+  --color-snc-primary-hover: var(--snc-primary-hover);
+  --color-snc-primary-subtle-bg: var(--snc-primary-subtle-bg);
+  --color-snc-accent: var(--snc-accent);
+  --color-snc-accent-subtle-bg: var(--snc-accent-subtle-bg);
+
+  --color-snc-success-bg: var(--snc-success-bg);
+  --color-snc-success-border: var(--snc-success-border);
+  --color-snc-success-text: var(--snc-success-text);
+  --color-snc-warning-bg: var(--snc-warning-bg);
+  --color-snc-warning-border: var(--snc-warning-border);
+  --color-snc-warning-text: var(--snc-warning-text);
+  --color-snc-error-bg: var(--snc-error-bg);
+  --color-snc-error-border: var(--snc-error-border);
+  --color-snc-error-text: var(--snc-error-text);
+  --color-snc-info-bg: var(--snc-info-bg);
+  --color-snc-info-border: var(--snc-info-border);
+  --color-snc-info-text: var(--snc-info-text);
+}
