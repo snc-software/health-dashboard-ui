@@ -1,38 +1,86 @@
 import { describe, expect, it } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  RouterProvider,
+} from '@tanstack/react-router';
 import { AppShell } from './AppShell';
 
-describe('AppShell', () => {
-  it('renders the brand mark and the Overview nav item', () => {
-    render(
+function renderAppShell(initialPath = '/') {
+  const rootRoute = createRootRoute({
+    component: () => (
       <AppShell>
-        <p>Routed content</p>
-      </AppShell>,
-    );
-
-    expect(screen.getByText('SNC')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Overview' })).toBeInTheDocument();
+        <Outlet />
+      </AppShell>
+    ),
   });
 
-  it('renders its children inside the main content area', () => {
-    render(
-      <AppShell>
-        <p>Routed content</p>
-      </AppShell>,
-    );
+  const indexRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/',
+    component: () => <p>Routed content</p>,
+  });
 
-    expect(screen.getByText('Routed content')).toBeInTheDocument();
+  const activitiesRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/activities',
+    component: () => <p>Activities content</p>,
+  });
+
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([indexRoute, activitiesRoute]),
+    history: createMemoryHistory({ initialEntries: [initialPath] }),
+  });
+
+  return render(<RouterProvider router={router} />);
+}
+
+describe('AppShell', () => {
+  it('renders the navigation menu with Overview and Activities', async () => {
+    renderAppShell();
+
+    expect(await screen.findByRole('button', { name: 'Overview' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Activities' })).toBeInTheDocument();
+  });
+
+  it('marks Overview as the active nav item for the index route', async () => {
+    renderAppShell('/');
+
+    expect(await screen.findByRole('button', { name: 'Overview' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Overview' })).toHaveClass('snc:border-snc-primary');
+    expect(screen.getByRole('button', { name: 'Activities' })).not.toHaveClass(
+      'snc:border-snc-primary',
+    );
+  });
+
+  it('navigates to Activities when the Activities nav item is clicked', async () => {
+    const { default: userEvent } = await import('@testing-library/user-event');
+    const user = userEvent.setup();
+
+    renderAppShell('/');
+    await screen.findByText('Routed content');
+
+    await user.click(screen.getByRole('button', { name: 'Activities' }));
+
+    expect(await screen.findByText('Activities content')).toBeInTheDocument();
+  });
+
+  it('renders its children inside the main content area', async () => {
+    renderAppShell();
+
+    expect(await screen.findByText('Routed content')).toBeInTheDocument();
   });
 
   it('toggles the document theme when the theme toggle is clicked', async () => {
     const { default: userEvent } = await import('@testing-library/user-event');
     const user = userEvent.setup();
 
-    render(
-      <AppShell>
-        <p>Routed content</p>
-      </AppShell>,
-    );
+    renderAppShell();
+    await screen.findByText('Routed content');
 
     expect(document.documentElement.classList.contains('dark')).toBe(false);
 
@@ -45,11 +93,8 @@ describe('AppShell', () => {
     const { default: userEvent } = await import('@testing-library/user-event');
     const user = userEvent.setup();
 
-    render(
-      <AppShell>
-        <p>Routed content</p>
-      </AppShell>,
-    );
+    renderAppShell();
+    await screen.findByText('Routed content');
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
@@ -59,12 +104,9 @@ describe('AppShell', () => {
     expect(screen.getByRole('option', { name: /^Overview/ })).toBeInTheDocument();
   });
 
-  it('opens the command palette with the Ctrl+K shortcut', () => {
-    render(
-      <AppShell>
-        <p>Routed content</p>
-      </AppShell>,
-    );
+  it('opens the command palette with the Ctrl+K shortcut', async () => {
+    renderAppShell();
+    await screen.findByText('Routed content');
 
     fireEvent.keyDown(window, { key: 'k', ctrlKey: true });
 
@@ -75,11 +117,8 @@ describe('AppShell', () => {
     const { default: userEvent } = await import('@testing-library/user-event');
     const user = userEvent.setup();
 
-    render(
-      <AppShell>
-        <p>Routed content</p>
-      </AppShell>,
-    );
+    renderAppShell();
+    await screen.findByText('Routed content');
 
     await user.click(screen.getByRole('button', { name: 'Search' }));
     await user.type(screen.getByRole('combobox', { name: 'Command palette search' }), 'billing');
@@ -92,11 +131,8 @@ describe('AppShell', () => {
     const { default: userEvent } = await import('@testing-library/user-event');
     const user = userEvent.setup();
 
-    render(
-      <AppShell>
-        <p>Routed content</p>
-      </AppShell>,
-    );
+    renderAppShell();
+    await screen.findByText('Routed content');
 
     await user.click(screen.getByRole('button', { name: 'Search' }));
     const search = screen.getByRole('combobox', { name: 'Command palette search' });
@@ -113,11 +149,8 @@ describe('AppShell', () => {
     const { default: userEvent } = await import('@testing-library/user-event');
     const user = userEvent.setup();
 
-    render(
-      <AppShell>
-        <p>Routed content</p>
-      </AppShell>,
-    );
+    renderAppShell();
+    await screen.findByText('Routed content');
 
     await user.click(screen.getByRole('button', { name: 'Search' }));
     await user.type(screen.getByRole('combobox', { name: 'Command palette search' }), 'billing');
