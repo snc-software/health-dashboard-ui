@@ -6,5 +6,9 @@ export const apiConfig = {
       authenticate: '/authenticate-garmin',
       authenticateMfa: '/authenticate-garmin-mfa',
     },
+    healthStats: {
+      daily: (startDate: string, endDate: string) =>
+        `/start/${startDate}/end/${endDate}/health-stats`,
+    },
   },
 } as const;
