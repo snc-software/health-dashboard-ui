@@ -2,7 +2,7 @@ import type { OptionItem } from '@snc-software/snc-ui';
 
 export const SEARCHABLE_ROUTES: OptionItem[] = [
   { id: 'overview', title: 'Overview', description: 'Workspace dashboard', href: '/' },
-  { id: 'settings', title: 'Settings', description: 'Update your preferences', href: '#settings' },
+  { id: 'settings', title: 'Settings', description: 'Update your preferences', href: '/settings' },
   { id: 'team', title: 'Team members', description: 'Invite and manage teammates', href: '#team' },
   { id: 'billing', title: 'Billing', description: 'Manage your subscription', href: '#billing' },
   { id: 'api-keys', title: 'API keys', description: 'Create and revoke keys', href: '#api-keys' },
@@ -19,4 +19,5 @@ export const SEARCH_DEBOUNCE_MS = 260;
 export const NAVIGATION_ITEMS = [
   { key: 'overview', label: 'Overview', path: '/' },
   { key: 'activities', label: 'Activities', path: '/activities' },
+  { key: 'settings', label: 'Settings', path: '/settings' },
 ] as const;
