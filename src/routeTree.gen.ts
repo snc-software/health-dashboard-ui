@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteRouteImport } from './routes/_layout/index/route'
 import { Route as LayoutActivitiesRouteRouteImport } from './routes/_layout/activities/route'
+import { Route as LayoutSettingsRouteRouteImport } from './routes/_layout/settings/route'
 
 const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
@@ -27,27 +28,40 @@ const LayoutActivitiesRouteRoute = LayoutActivitiesRouteRouteImport.update({
   path: '/activities',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutSettingsRouteRoute = LayoutSettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => LayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof LayoutIndexRouteRoute
   '/activities': typeof LayoutActivitiesRouteRoute
+  '/settings': typeof LayoutSettingsRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof LayoutIndexRouteRoute
   '/activities': typeof LayoutActivitiesRouteRoute
+  '/settings': typeof LayoutSettingsRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_layout': typeof LayoutRouteWithChildren
   '/_layout/': typeof LayoutIndexRouteRoute
   '/_layout/activities': typeof LayoutActivitiesRouteRoute
+  '/_layout/settings': typeof LayoutSettingsRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/activities'
+  fullPaths: '/' | '/activities' | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/activities'
-  id: '__root__' | '/_layout' | '/_layout/' | '/_layout/activities'
+  to: '/' | '/activities' | '/settings'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/_layout/'
+    | '/_layout/activities'
+    | '/_layout/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,17 +91,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutActivitiesRouteRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/settings': {
+      id: '/_layout/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof LayoutSettingsRouteRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
 interface LayoutRouteChildren {
   LayoutIndexRouteRoute: typeof LayoutIndexRouteRoute
   LayoutActivitiesRouteRoute: typeof LayoutActivitiesRouteRoute
+  LayoutSettingsRouteRoute: typeof LayoutSettingsRouteRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutIndexRouteRoute: LayoutIndexRouteRoute,
   LayoutActivitiesRouteRoute: LayoutActivitiesRouteRoute,
+  LayoutSettingsRouteRoute: LayoutSettingsRouteRoute,
 }
 
 const LayoutRouteWithChildren =
