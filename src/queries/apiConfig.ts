@@ -6,6 +6,10 @@ export const apiConfig = {
       authenticate: '/authenticate-garmin',
       authenticateMfa: '/authenticate-garmin-mfa',
     },
+    strava: {
+      session: '/strava-session',
+      authorize: '/authorize-strava',
+    },
     healthStats: {
       daily: (startDate: string, endDate: string) =>
         `/start/${startDate}/end/${endDate}/health-stats`,

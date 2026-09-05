@@ -6,6 +6,10 @@ vi.mock('@/components/GarminSettingsPanel', () => ({
   GarminSettingsPanel: () => <div>Garmin settings panel</div>,
 }));
 
+vi.mock('@/components/StravaSettingsPanel', () => ({
+  StravaSettingsPanel: () => <div>Strava settings panel</div>,
+}));
+
 describe('Settings', () => {
   it('renders the Settings heading', () => {
     render(<Settings />);
@@ -17,5 +21,11 @@ describe('Settings', () => {
     render(<Settings />);
 
     expect(screen.getByText('Garmin settings panel')).toBeInTheDocument();
+  });
+
+  it('renders the StravaSettingsPanel', () => {
+    render(<Settings />);
+
+    expect(screen.getByText('Strava settings panel')).toBeInTheDocument();
   });
 });
